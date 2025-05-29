@@ -5,39 +5,46 @@ import Skills from '../components/Skills.astro';
 import GithubIcon from '../components/icons/GithubIcon.astro';
 import LinkedinIcon from '../components/icons/LinkedinIcon.astro';
 
+// Import project images
+import soleScanImage from '../assets/SoleScan.png';
+import geBotImage from '../assets/GEBot.png';
+import rsmlImage from '../assets/RSML.png';
+import mlCompareImage from '../assets/mlcompare.png';
+import quantImage from '../assets/Quant.png';
+
 const projects = [
   {
     title: "Sole Scan iOS App",
     description: "Feature-rich iOS app for sneaker resellers with barcode scanning, live market data, inventory tracking, and profit analytics. Live on the App Store!",
-    imageUrl: "/src/assets/SoleScan.png", 
+    imageUrl: soleScanImage, 
     projectUrl: "/projects/sole-scan",
     tags: ["iOS", "SwiftUI", "Firebase", "API Integration", "App Store"]
   },
   {
     title: "GE Flipping Profit Optimizer",
     description: "A command-line tool for RuneScape's Grand Exchange that finds high-ROI flipping opportunities using real-time market data.",
-    imageUrl: "/src/assets/GEBot.png",
+    imageUrl: geBotImage,
     projectUrl: "/projects/ge-flipper",
     tags: ["Python", "CLI", "Data Analysis", "RuneScape", "API"]
   },
   {
     title: "RuneScape ML Task Bot",
     description: "An RL bot selecting profitable RuneScape activities based on stats, market history, and gold/hour. (Work in Progress)",
-    imageUrl: "/src/assets/RSML.png", 
+    imageUrl: rsmlImage, 
     projectUrl: "/projects/rs-ml-bot",
     tags: ["Python", "Machine Learning", "Reinforcement Learning", "RuneScape"]
   },
   {
     title: "ML Model Comparison Dashboard",
     description: "A web app to upload datasets and compare ML models on key metrics with rich visualizations. (Work in Progress)",
-    imageUrl: "/src/assets/mlcompare.png", 
+    imageUrl: mlCompareImage, 
     projectUrl: "/projects/ml-dashboard",
     tags: ["Python", "Streamlit", "Machine Learning", "Data Visualization"]
   },
   {
     title: "Quant Trading Strategy Simulator",
     description: "A backtesting tool for quant strategies using historical data, visualizing returns and key financial metrics. (Work in Progress)",
-    imageUrl: "/src/assets/Quant.png", 
+    imageUrl: quantImage, 
     projectUrl: "/projects/quant-simulator",
     tags: ["Python", "Pandas", "Quantitative Finance", "Backtesting"]
   }
