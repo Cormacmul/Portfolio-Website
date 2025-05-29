@@ -28,10 +28,8 @@ const navLinks = [
         ))}
       </ul>
 
-      
       <ThemeToggleButton />
 
-      
       <div class="flex items-center space-x-3">
         <a href={GITHUB_PROFILE_URL} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="social-icon text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary transition-colors">
           <GithubIcon className="w-5 h-5" />
@@ -41,7 +39,36 @@ const navLinks = [
         </a>
       </div>
        
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+        <span class="sr-only">Open main menu</span>
+        <!-- Hamburger Icon -->
+        <svg id="hamburger-icon" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <!-- X Icon (hidden by default) -->
+        <svg id="x-icon" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile Menu Panel -->
+  <div id="mobile-menu-panel" class="md:hidden hidden bg-white/95 dark:bg-[#020617]/95 absolute top-full left-0 w-full shadow-lg border-t border-slate-200 dark:border-slate-700/60">
+    <ul class="flex flex-col items-center space-y-1 px-2 pt-2 pb-3 sm:px-3">
+      {navLinks.map(link => (
+        <li>
+          <a 
+            href={link.href} 
+            class="block w-full text-center px-3 py-3 rounded-md text-base font-medium text-lm-text-main dark:text-dm-text-main hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-primary transition-colors"
+            aria-current={link.href === Astro.url.pathname ? "page" : undefined}
+          >
+            {link.text}
+          </a>
+        </li>
+      ))}
+    </ul>
   </div>
   
 </nav>
@@ -123,6 +150,46 @@ const navLinks = [
         homeLink.classList.add('active-nav-link');
       }
     }
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenuPanel = document.getElementById('mobile-menu-panel');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const xIcon = document.getElementById('x-icon');
+
+    if (mobileMenuButton && mobileMenuPanel && hamburgerIcon && xIcon) {
+      mobileMenuButton.addEventListener('click', () => {
+        const isOpen = mobileMenuPanel.classList.contains('mobile-menu-open');
+        
+        if (isOpen) {
+          // Close menu
+          gsap.to(mobileMenuPanel, { 
+            opacity: 0, 
+            maxHeight: 0, 
+            duration: 0.3, 
+            ease: 'power2.inOut', 
+            onComplete: () => mobileMenuPanel.classList.remove('mobile-menu-open')
+          });
+          hamburgerIcon.classList.remove('hidden');
+          xIcon.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+        } else {
+          // Open menu
+          mobileMenuPanel.classList.add('mobile-menu-open');
+          gsap.set(mobileMenuPanel, {opacity: 0, maxHeight: 0}); // Set initial state for animation
+          gsap.to(mobileMenuPanel, { 
+            opacity: 1, 
+            maxHeight: '500px',
+            duration: 0.3, 
+            ease: 'power2.inOut' 
+          });
+          hamburgerIcon.classList.add('hidden');
+          xIcon.classList.remove('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+
   });
 </script>
 
@@ -163,6 +230,15 @@ const navLinks = [
   a.desktop-nav-link.active-nav-link::after {
     width: 100%;
     left: 0;
+  }
+
+  
+  #mobile-menu-panel {
+    display: none; 
+    overflow: hidden; 
+  }
+  #mobile-menu-panel.mobile-menu-open {
+    display: block;
   }
   
 </style> 
