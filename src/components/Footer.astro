@@ -1,0 +1,15 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear();
+---
+<footer class="bg-lm-background-header dark:bg-dm-background-header text-lm-text-muted dark:text-dm-text-muted p-8 text-center mt-auto border-t border-slate-200 dark:border-slate-700">
+  <div class="container mx-auto">
+    <p>&copy; {currentYear} Cormac Mulvenna. All rights reserved.</p>
+    <p class="mt-2">
+      {/* Global link styles from Layout.astro will apply if not overridden here */}
+      <a href="https://github.com/Cormacmul" target="_blank" rel="noopener noreferrer" class="hover:text-primary dark:hover:text-primary">
+        GitHub Profile
+      </a> 
+    </p>
+  </div>
+</footer> 

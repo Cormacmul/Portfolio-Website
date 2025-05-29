@@ -1,11 +1,242 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Skills from '../components/Skills.astro';
+import GithubIcon from '../components/icons/GithubIcon.astro';
+import LinkedinIcon from '../components/icons/LinkedinIcon.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = [
+  {
+    title: "Sole Scan iOS App",
+    description: "Feature-rich iOS app for sneaker resellers with barcode scanning, live market data, inventory tracking, and profit analytics. Live on the App Store!",
+    imageUrl: "/src/assets/SoleScan.png", 
+    projectUrl: "/projects/sole-scan",
+    tags: ["iOS", "SwiftUI", "Firebase", "API Integration", "App Store"]
+  },
+  {
+    title: "GE Flipping Profit Optimizer",
+    description: "A command-line tool for RuneScape's Grand Exchange that finds high-ROI flipping opportunities using real-time market data.",
+    imageUrl: "/src/assets/GEBot.png",
+    projectUrl: "/projects/ge-flipper",
+    tags: ["Python", "CLI", "Data Analysis", "RuneScape", "API"]
+  },
+  {
+    title: "RuneScape ML Task Bot",
+    description: "An RL bot selecting profitable RuneScape activities based on stats, market history, and gold/hour. (Work in Progress)",
+    imageUrl: "/src/assets/RSML.png", 
+    projectUrl: "/projects/rs-ml-bot",
+    tags: ["Python", "Machine Learning", "Reinforcement Learning", "RuneScape"]
+  },
+  {
+    title: "ML Model Comparison Dashboard",
+    description: "A web app to upload datasets and compare ML models on key metrics with rich visualizations. (Work in Progress)",
+    imageUrl: "/src/assets/mlcompare.png", 
+    projectUrl: "/projects/ml-dashboard",
+    tags: ["Python", "Streamlit", "Machine Learning", "Data Visualization"]
+  },
+  {
+    title: "Quant Trading Strategy Simulator",
+    description: "A backtesting tool for quant strategies using historical data, visualizing returns and key financial metrics. (Work in Progress)",
+    imageUrl: "/src/assets/Quant.png", 
+    projectUrl: "/projects/quant-simulator",
+    tags: ["Python", "Pandas", "Quantitative Finance", "Backtesting"]
+  }
+];
+
+const GITHUB_PROFILE_URL = "https://github.com/Cormacmul";
+const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/cormac-mulvenna-63b73b2b2/"; 
+
 ---
+<Layout title="Home - Cormac Mulvenna">
+	<section class="text-lm-text-main dark:text-dm-text-main py-24 md:py-40 text-center">
+		<div class="container mx-auto px-6">
+			<h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight drop-shadow-lg">Cormac Mulvenna</h1>
+			<p id="hero-subtitle" class="text-xl md:text-2xl text-lm-text-muted dark:text-dm-text-muted mb-10 max-w-3xl mx-auto">
+				Software Developer & ML Enthusiast. Building innovative tools and exploring data-driven solutions.
+			</p>
+			<div id="hero-buttons" class="space-x-4">
+				<a href="#about" class="hero-cta-button bg-primary hover:bg-primary-dark text-white font-bold py-4 px-10 rounded-lg text-lg transition duration-300 ease-in-out shadow-lg hover:shadow-primary/50">
+					About Me
+				</a>
+				<a href="#projects" class="hero-cta-button bg-slate-700 dark:bg-dm-background-light hover:bg-slate-600 dark:hover:bg-slate-700 text-lm-text-main dark:text-dm-text-main font-semibold py-4 px-8 rounded-lg text-lg transition duration-300 ease-in-out shadow-lg">
+					View My Work
+				</a>
+			</div>
+		</div>
+	</section>
 
-<Layout>
-	<Welcome />
+	<section id="about" class="py-20 md:py-28 border-y border-slate-200 dark:border-slate-700/80">
+		<div class="container mx-auto px-6 text-center md:text-left">
+			<div class="md:flex md:items-center md:gap-12">
+				<div class="md:w-1/3 mb-10 md:mb-0">
+					<div class="aspect-square w-64 h-64 md:w-full md:h-auto mx-auto bg-slate-200 dark:bg-slate-700 rounded-lg shadow-lg flex items-center justify-center">
+						<span class="text-lm-text-muted dark:text-dm-text-muted text-lg">Placeholder</span>
+					</div>
+				</div>
+				<div class="md:w-2/3">
+					<h2 class="text-4xl md:text-5xl font-bold text-lm-text-main dark:text-dm-text-main mb-6">
+						About Me
+					</h2>
+					<p class="text-lm-text-muted dark:text-dm-text-muted text-lg leading-relaxed mb-4">
+						Hello! I'm Cormac, a passionate software developer with a keen interest in machine learning and building impactful, data-driven applications. I thrive on tackling complex challenges and transforming innovative ideas into tangible solutions.
+					</p>
+					<p class="text-lm-text-muted dark:text-dm-text-muted text-lg leading-relaxed mb-6">
+						From crafting intuitive mobile experiences to developing intelligent bots and analytical tools, I'm driven by a constant curiosity and a desire to learn and grow in the ever-evolving tech landscape. My project work reflects my journey in exploring different technologies and problem domains.
+					</p>
+					<a href="#contact" class="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-primary/50">
+						Get In Touch
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="projects" class="py-20 md:py-28">
+		<div class="container mx-auto px-6">
+			<h2 class="text-4xl md:text-5xl font-bold text-center text-lm-text-main dark:text-dm-text-main mb-20">
+				Featured Projects
+			</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+				{projects.map(project => (
+					<ProjectCard
+						title={project.title}
+						description={project.description}
+						imageUrl={project.imageUrl}
+						projectUrl={project.projectUrl}
+						tags={project.tags}
+					/>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<Skills />
+
+	<section id="contact" class="py-20 md:py-28 border-t border-slate-200 dark:border-slate-700/80">
+		<div class="container mx-auto px-6 text-center">
+			<h2 class="text-4xl md:text-5xl font-bold text-lm-text-main dark:text-dm-text-main mb-8">
+				Get In Touch
+			</h2>
+			<p class="text-lm-text-muted dark:text-dm-text-muted text-xl leading-relaxed mb-10 max-w-2xl mx-auto">
+				I'm always open to discussing new projects, creative ideas, or opportunities to collaborate. 
+				Feel free to reach out!
+			</p>
+			
+			<div class="mb-10">
+				<a href="mailto:cormacmulvenna@icloud.com" class="text-primary hover:text-primary-light dark:hover:text-primary-light text-2xl md:text-3xl font-medium transition-colors duration-300">
+					cormacmulvenna@icloud.com
+				</a>
+			</div>
+
+			<p class="text-lm-text-muted dark:text-dm-text-muted text-lg mb-6 contact-findme-text">Or find me on:</p>
+			<div class="flex justify-center space-x-6 mb-12">
+				<a href={GITHUB_PROFILE_URL} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary transition-colors">
+					<GithubIcon className="w-9 h-9 md:w-10 md:h-10 social-icon-contact" />
+				</a>
+				<a href={LINKEDIN_PROFILE_URL} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary transition-colors">
+					<LinkedinIcon className="w-9 h-9 md:w-10 md:h-10 social-icon-contact" />
+				</a>
+			</div>
+		</div>
+	</section>
+
+
 </Layout>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'; 
+
+  gsap.registerPlugin(ScrollTrigger); 
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const heroTl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } });
+
+    heroTl
+      .from('#hero-title', { opacity: 0, y: 50, delay: 0.2 })
+      .from('#hero-subtitle', { opacity: 0, y: 40 }, "-=0.6")
+      .from('.hero-cta-button', { opacity: 0, y: 30, stagger: 0.2 }, "-=0.5"); 
+
+    const ctaButtons = gsap.utils.toArray<HTMLAnchorElement>('.hero-cta-button');
+    ctaButtons.forEach(button => {
+      const hoverTl = gsap.timeline({ paused: true });
+      hoverTl.to(button, { 
+        yPercent: -10, 
+        scale: 1.05,   
+        duration: 0.2,
+        ease: 'power1.out'
+      });
+      button.addEventListener('mouseenter', () => hoverTl.play());
+      button.addEventListener('mouseleave', () => hoverTl.reverse());
+    });
+
+    gsap.utils.toArray<HTMLAnchorElement>('.project-card-animate').forEach((card, i) => {
+      gsap.from(card, {
+        opacity: 0,
+        y: 60,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%', 
+          toggleActions: 'play none none none', 
+        },
+        delay: i * 0.1 
+      });
+    });
+
+    const contactSocialIcons = gsap.utils.toArray<HTMLAnchorElement>('.social-icon-contact');
+    contactSocialIcons.forEach(icon => {
+      const iconSvg = icon.querySelector('svg');
+      if (!iconSvg) return;
+      const hoverTl = gsap.timeline({ paused: true });
+      hoverTl.to(iconSvg, { 
+        yPercent: -15,
+        scale: 1.1,
+        duration: 0.2,
+        ease: 'power1.out' 
+      });
+      icon.addEventListener('mouseenter', () => hoverTl.play());
+      icon.addEventListener('mouseleave', () => hoverTl.reverse());
+    });
+
+    const revealSection = (sectionSelector: string, elementsToAnimate: {selector: string, stagger?: number, delay?: number}[]) => {
+      const section = document.querySelector(sectionSelector);
+      if (!section) return;
+
+      elementsToAnimate.forEach(elConfig => {
+        const targets = gsap.utils.toArray(section.querySelectorAll(elConfig.selector));
+        if (targets.length > 0) {
+          gsap.from(targets, {
+            opacity: 0,
+            y: 40,
+            duration: 0.8,
+            ease: 'power3.out',
+            stagger: elConfig.stagger || 0.15,
+            delay: elConfig.delay || 0, 
+            scrollTrigger: {
+              trigger: section, 
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            }
+          });
+        }
+      });
+    };
+
+    revealSection('#about', [
+      { selector: 'h2', delay: 0.1 },
+      { selector: 'p', stagger: 0.2, delay: 0.3 }, 
+      { selector: 'a[href="#contact"]', delay: 0.5 } 
+    ]);
+
+    revealSection('#contact', [
+      { selector: 'h2', delay: 0.1 }, 
+      { selector: 'p:not(.contact-findme-text)', delay: 0.3 }, 
+      { selector: 'a[href^="mailto:"]', delay: 0.4 }, 
+      { selector: '.contact-findme-text', delay: 0.5 }, 
+      { selector: '.social-icon-contact', stagger: 0.1, delay: 0.6 } 
+    ]);
+
+  });
+</script>

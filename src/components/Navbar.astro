@@ -1,0 +1,168 @@
+---
+import GithubIcon from './icons/GithubIcon.astro';
+import LinkedinIcon from './icons/LinkedinIcon.astro';
+import ThemeToggleButton from './ThemeToggleButton.astro';
+
+const GITHUB_PROFILE_URL = "https://github.com/Cormacmul";
+const LINKEDIN_PROFILE_URL = "https://www.linkedin.com/in/cormac-mulvenna-63b73b2b2/";
+
+const navLinks = [
+  { href: "/", text: "Home" },
+  { href: "/#about", text: "About" },      // Link to about section on homepage
+  { href: "/#projects", text: "Projects" }, // Link to projects section on homepage
+  { href: "/#contact", text: "Contact" },  // Link to contact section on homepage
+];
+
+---
+<nav class="text-lm-text-main dark:text-dm-text-main p-4 shadow-lg sticky top-0 z-50 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/60 bg-white/85 dark:bg-[#020617]/85 transition-colors duration-300 scrolled-navbar:bg-white/95 scrolled-navbar:dark:bg-[#020617]/95">
+  <div class="container mx-auto flex justify-between items-center">
+    <a href="/" class="text-xl font-bold hover:text-primary dark:hover:text-primary transition-colors">Dashboard</a>
+    
+    <div class="flex items-center space-x-4 md:space-x-6">
+      
+      <ul class="hidden md:flex items-center space-x-6">
+        {navLinks.map(link => (
+          <li>
+            <a href={link.href} class={`text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary transition-colors font-medium text-sm tracking-wide desktop-nav-link ${link.href === '/' ? 'home-nav-link' : ''}`}>{link.text}</a>
+          </li>
+        ))}
+      </ul>
+
+      
+      <ThemeToggleButton />
+
+      
+      <div class="flex items-center space-x-3">
+        <a href={GITHUB_PROFILE_URL} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="social-icon text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary transition-colors">
+          <GithubIcon className="w-5 h-5" />
+        </a>
+        <a href={LINKEDIN_PROFILE_URL} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="social-icon text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary transition-colors">
+          <LinkedinIcon className="w-5 h-5" />
+        </a>
+      </div>
+       
+    </div>
+  </div>
+  
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const { gsap } = await import('gsap');
+    const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+    gsap.registerPlugin(ScrollTrigger);
+
+    const navElement = document.querySelector('nav');
+    if (navElement) {
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: "150px top",
+        end: "150px top",
+        toggleClass: {
+          targets: navElement,
+          className: "scrolled-navbar" 
+        },
+        
+      });
+    }
+
+    const socialIcons = gsap.utils.toArray('.social-icon') as HTMLAnchorElement[];
+    socialIcons.forEach(icon => {
+      const iconSvg = icon.querySelector('svg');
+      if (!iconSvg) return;
+      const hoverTimeline = gsap.timeline({ paused: true });
+      hoverTimeline.to(iconSvg, { 
+        yPercent: -15, scale: 1.1, duration: 0.2, ease: 'power1.out' 
+      });
+      icon.addEventListener('mouseenter', () => hoverTimeline.play());
+      icon.addEventListener('mouseleave', () => hoverTimeline.reverse());
+    });
+
+    const desktopNavLinks = gsap.utils.toArray<HTMLAnchorElement>('.desktop-nav-link');
+    const homeLink = desktopNavLinks.find(link => link.classList.contains('home-nav-link'));
+
+    desktopNavLinks.forEach(link => {
+      const sectionId = link.getAttribute('href');
+      if (sectionId && sectionId.startsWith('/#')) { 
+        ScrollTrigger.create({
+          trigger: sectionId,
+          start: "top center+=50px", 
+          end: "bottom center-=50px", 
+          onEnter: () => {
+            desktopNavLinks.forEach(l => l.classList.remove('active-nav-link'));
+            link.classList.add('active-nav-link');
+          },
+          onEnterBack: () => {
+            desktopNavLinks.forEach(l => l.classList.remove('active-nav-link'));
+            link.classList.add('active-nav-link');
+          },
+         
+        });
+      }
+    });
+
+   
+    if (homeLink) {
+      ScrollTrigger.create({
+        trigger: document.body, 
+        start: "top top+=100", 
+        end: "bottom top", 
+        onToggle: self => {
+          
+          const otherLinkActive = desktopNavLinks.some(l => l !== homeLink && l.classList.contains('active-nav-link'));
+          if (self.isActive && !otherLinkActive) {
+            homeLink.classList.add('active-nav-link');
+          } else if (!self.isActive && homeLink.classList.contains('active-nav-link') && otherLinkActive) {
+             homeLink.classList.remove('active-nav-link');
+          } else if (self.isActive && otherLinkActive && homeLink.classList.contains('active-nav-link')){
+            homeLink.classList.remove('active-nav-link');
+          }
+        },
+      });
+      if (window.scrollY <= 100 && !desktopNavLinks.some(l => l !== homeLink && l.classList.contains('active-nav-link'))) {
+        homeLink.classList.add('active-nav-link');
+      }
+    }
+  });
+</script>
+
+<style>
+  a.desktop-nav-link {
+    position: relative; 
+    transition: color 0.2s ease-in-out; 
+  }
+
+  a.desktop-nav-link.active-nav-link {
+    @apply text-primary dark:text-primary; 
+  }
+
+  a.desktop-nav-link.active-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; 
+    left: 0;
+    width: 100%;
+    height: 2px;
+    @apply bg-primary; 
+    opacity: 1; 
+    transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out; 
+  }
+
+  
+  a.desktop-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%; 
+    width: 0%; 
+    height: 2px;
+    @apply bg-primary;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+  }
+  a.desktop-nav-link:hover::after,
+  a.desktop-nav-link.active-nav-link::after {
+    width: 100%;
+    left: 0;
+  }
+  
+</style> 

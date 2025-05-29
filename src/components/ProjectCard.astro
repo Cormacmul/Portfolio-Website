@@ -1,0 +1,136 @@
+---
+// src/components/ProjectCard.astro
+export interface Props {
+  title: string;
+  description: string;
+  imageUrl?: string;
+  projectUrl: string;
+  tags?: string[];
+}
+
+const { title, description, imageUrl, projectUrl, tags } = Astro.props;
+---
+<a href={projectUrl} 
+   class="project-card-animate block 
+          bg-lm-background-light dark:bg-dm-background-light 
+          shadow-card dark:shadow-dm-card hover:shadow-card-hover dark:hover:shadow-dm-card-hover 
+          rounded-lg overflow-hidden transition-all duration-300 ease-in-out group 
+          border border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary">
+  {imageUrl && (
+    <div class="w-full aspect-square overflow-hidden border-b border-slate-200 dark:border-slate-700">
+      <img src={imageUrl} alt={`Preview image for ${title}`} class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105" />
+    </div>
+  )}
+  <div class="p-6">
+    <h3 class="text-2xl font-semibold mb-3 text-lm-text-main dark:text-dm-text-main group-hover:text-primary dark:group-hover:text-primary transition-colors">{title}</h3>
+    <p class="text-lm-text-muted dark:text-dm-text-muted mb-4 text-sm leading-relaxed min-h-[60px]">{description.substring(0, 120)}{description.length > 120 ? '...' : ''}</p>
+    {tags && tags.length > 0 && (
+      <div class="mb-4 pt-2">
+        {tags.map(tag => (
+          <span class="project-tag inline-block bg-primary/10 dark:bg-primary/20 text-primary text-xs font-medium mr-2 mb-2 px-3 py-1 rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+    <span class="project-card-arrow inline-block text-primary font-semibold group-hover:underline mt-2">
+      View Details &rarr;
+    </span>
+  </div>
+</a>
+
+<script>
+  import gsap from 'gsap';
+
+  // This script will run for each instance of ProjectCard
+  const cards = document.querySelectorAll('.project-card-animate'); // The main card class
+
+  cards.forEach(cardEl => {
+    // Cast cardEl to HTMLElement for offsetWidth/Height if necessary, or ensure it's always an HTMLElement
+    const card = cardEl as HTMLElement;
+
+    const arrow = card.querySelector('.project-card-arrow');
+    const tags = card.querySelectorAll('.project-tag'); // Get all tags within the card
+
+    // Arrow animation timeline
+    const arrowHoverTimeline = gsap.timeline({ paused: true });
+    if (arrow) {
+      arrowHoverTimeline
+        .to(arrow, { // Slight move left (anticipation)
+          xPercent: -10,
+          opacity: 0.8,
+          duration: 0.15,
+          ease: 'power1.in'
+        })
+        .to(arrow, { // Main move right (overshoot slightly)
+          xPercent: 30, // Was 25
+          opacity: 1,
+          duration: 0.25, // Slightly longer for the main movement
+          ease: 'power2.out'
+        })
+        .to(arrow, { // Settle back to target
+          xPercent: 25, // Final position
+          duration: 0.2,
+          ease: 'power1.inOut'
+        });
+    }
+
+    // Tags animation timeline
+    const tagsHoverTimeline = gsap.timeline({ paused: true });
+    if (tags.length > 0) {
+      tagsHoverTimeline.to(tags, {
+        yPercent: -10, // Move up slightly
+        scale: 1.05,   // Scale up a bit
+        stagger: 0.05, // Stagger the animation for each tag
+        duration: 0.2,
+        ease: 'power1.out'
+      });
+    }
+
+    card.addEventListener('mouseenter', () => {
+      if (arrow) arrowHoverTimeline.play();
+      if (tags.length > 0) tagsHoverTimeline.play();
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (arrow) arrowHoverTimeline.reverse();
+      if (tags.length > 0) tagsHoverTimeline.reverse();
+      // Reset 3D tilt on mouse leave
+      gsap.to(card, {
+        rotationX: 0,
+        rotationY: 0,
+        ease: "elastic.out(1, 0.5)", // A bit more controlled elastic return
+        duration: 1.2
+      });
+    });
+
+    // 3D Tilt on Mouse Move
+    card.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = (y - centerY) / centerY * -7; // Max rotation 7 degrees
+      const rotateY = (x - centerX) / centerX * 7;  // Max rotation 7 degrees
+
+      gsap.to(card, {
+        rotationX: rotateX,
+        rotationY: rotateY,
+        ease: "power1.out",
+        duration: 0.3,
+        transformPerspective: 1000 // Ensure perspective is maintained during tween
+      });
+    });
+  });
+</script> 
+
+<style>
+  .project-card-animate {
+    transform-style: preserve-3d;
+    perspective: 1000px; /* Adjust as needed for the desired 3D effect depth */
+    will-change: transform; /* Hint to the browser for optimization */
+  }
+</style> 

@@ -1,38 +1,54 @@
-# Astro Starter Kit: Basics
+# Personal Portfolio Website
 
-```sh
-npm create astro@latest -- --template basics
-```
+This is a personal portfolio website built with Astro, Tailwind CSS, and GSAP for animations.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Features
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+*   **Navbar:** Responsive navigation bar with hover effects.
+*   **Projects Section:** Displays project cards with information and links.
+*   **Skills Section:** Showcases technical skills with icons and animations.
+*   **Custom Cursor:** (Removed - formerly a feature)
+*   **Dark Mode:** (Assumed, based on Tailwind CSS and common practice, but not explicitly worked on in this session)
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+tion in `Skills.astro` from `gsap.from()` to `gsap.fromTo()`, ensuring the final opacity is set to `1`.
 
-## 🚀 Project Structure
+## Project Structure
 
 Inside of your Astro project, you'll see the following folders and files:
 
 ```text
-/
+my-astro-portfolio/
 ├── public/
 │   └── favicon.svg
 ├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── icons/
+│   │   │   └── skills/
+│   │   └── ProjectCard.astro
+│   │   └── Skills.astro
 │   ├── layouts/
 │   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── pages/
+│   │   └── index.astro
+│   └── styles/
+│       └── global.css
+├── .astro/
+├── node_modules/
+├── .git/
+├── .vscode/
+├── .gitignore
+├── astro.config.mjs
+├── package-lock.json
+├── package.json
+├── README.md
+└── tailwind.config.mjs
+└── tsconfig.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Commands
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
+All commands are run from the root of the project (`my-astro-portfolio`), from a terminal:
 
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
@@ -43,6 +59,3 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

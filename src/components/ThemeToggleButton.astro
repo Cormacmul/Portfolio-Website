@@ -1,0 +1,37 @@
+---
+import SunIcon from "./icons/SunIcon.astro";
+import MoonIcon from "./icons/MoonIcon.astro";
+---
+<button id="theme-toggle-button" type="button" aria-label="Toggle theme" class="text-lm-text-muted dark:text-dm-text-muted hover:text-primary dark:hover:text-primary transition-colors">
+  <SunIcon className="w-5 h-5 hidden dark:block" /> 
+  <MoonIcon className="w-5 h-5 block dark:hidden" />
+</button>
+
+<script>
+  const toggleButton = document.getElementById('theme-toggle-button');
+
+  const applyTheme = (theme: string) => {
+    console.log('Applying theme:', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      console.log('Added "dark" class to html element. Current classes:', document.documentElement.className);
+    } else {
+      document.documentElement.classList.remove('dark');
+      console.log('Removed "dark" class from html element. Current classes:', document.documentElement.className);
+    }
+  };
+
+  toggleButton?.addEventListener('click', () => {
+    console.log('Theme toggle button clicked!');
+    const currentThemeIsDark = document.documentElement.classList.contains('dark');
+    console.log('Current theme is dark:', currentThemeIsDark);
+    
+    const newTheme = currentThemeIsDark ? 'light' : 'dark';
+    console.log('New theme will be:', newTheme);
+    
+    localStorage.setItem('theme', newTheme);
+    console.log('Stored in localStorage:', localStorage.getItem('theme'));
+    
+    applyTheme(newTheme);
+  });
+</script> 

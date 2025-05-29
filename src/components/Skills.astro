@@ -1,0 +1,201 @@
+---
+// src/components/Skills.astro
+import PythonIcon from './icons/skills/PythonIcon.astro';
+import JavaScriptIcon from './icons/skills/JavaScriptIcon.astro';
+import HtmlIcon from './icons/skills/HtmlIcon.astro';
+import AstroIcon from './icons/skills/AstroIcon.astro';
+import TailwindIcon from './icons/skills/TailwindIcon.astro';
+import SqlIcon from './icons/skills/SqlIcon.astro';
+import CSharpIcon from './icons/skills/CSharpIcon.astro';
+import CIcon from './icons/skills/CIcon.astro';
+import JavaIcon from './icons/skills/JavaIcon.astro';
+import AppStoreIcon from './icons/skills/AppStoreIcon.astro';
+import CliIcon from './icons/skills/CliIcon.astro';
+import FirebaseIcon from './icons/skills/FirebaseIcon.astro';
+import GitIcon from './icons/skills/GitIcon.astro';
+import IOSIcon from './icons/skills/IOSIcon.astro';
+import PandasIcon from './icons/skills/PandasIcon.astro';
+import StreamlitIcon from './icons/skills/StreamlitIcon.astro';
+import SwiftIcon from './icons/skills/SwiftIcon.astro';
+import MLIcon from './icons/skills/MLIcon.astro';
+import VercelIcon from './icons/skills/VercelIcon.astro';
+
+interface Skill {
+  name: string;
+  category?: string;
+  iconComponent?: any; 
+}
+
+const skillsData: Skill[] = [
+  // Programming Languages
+  { name: "Python", category: "Languages", iconComponent: PythonIcon },
+  { name: "JavaScript", category: "Languages", iconComponent: JavaScriptIcon },
+  { name: "Java", category: "Languages", iconComponent: JavaIcon },
+  { name: "C#", category: "Languages", iconComponent: CSharpIcon },
+  { name: "C", category: "Languages", iconComponent: CIcon },
+  { name: "HTML", category: "Languages", iconComponent: HtmlIcon },
+  { name: "SQL", category: "Languages", iconComponent: SqlIcon },
+  
+
+  // Frontend & Web Technologies
+  { name: "Astro", category: "Frameworks & Libraries", iconComponent: AstroIcon },
+  { name: "Tailwind CSS", category: "Frameworks & Libraries", iconComponent: TailwindIcon },
+  { name: "GSAP", category: "Frameworks & Libraries" },
+
+  // Mobile Development
+  { name: "SwiftUI", category: "Mobile Development", iconComponent: SwiftIcon },
+  { name: "iOS", category: "Mobile Development", iconComponent: IOSIcon },
+
+
+  // Data Science & ML
+  { name: "Machine Learning", category: "Data Science & ML", iconComponent: MLIcon},
+  { name: "Reinforcement Learning", category: "Data Science & ML" },
+  { name: "Data Analysis", category: "Data Science & ML" },
+  { name: "Data Visualization", category: "Data Science & ML" },
+  { name: "Pandas", category: "Frameworks & Libraries", iconComponent: PandasIcon },
+  { name: "Streamlit", category: "Frameworks & Libraries", iconComponent: StreamlitIcon },
+
+
+  // Backend, Databases & APIs
+  { name: "Firebase", category: "Backend & Databases", iconComponent: FirebaseIcon },
+  { name: "APIs", category: "Concepts & Areas" },
+  { name: "Web Scraping", category: "Concepts & Areas" },
+
+  // Tools & Platforms
+  { name: "Vercel", category: "Tools & Platforms", iconComponent: VercelIcon },
+  { name: "Git & GitHub", category: "Tools & Platforms", iconComponent: GitIcon },
+  { name: "CLI", category: "Tools & Platforms", iconComponent: CliIcon },
+  { name: "App Store", category: "Tools & Platforms", iconComponent: AppStoreIcon },
+
+  // Other Concepts
+  { name: "Quantitative Finance", category: "Concepts & Areas" },
+];
+
+
+const groupedSkills = skillsData.reduce((acc, skill) => {
+  const category = skill.category || "Other";
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(skill);
+  return acc;
+}, {} as Record<string, Skill[]>);
+
+const categoryOrder = [
+  "Languages",
+  "Frameworks & Libraries",
+  "Backend & Databases",
+  "Mobile Development",
+  "Data Science & ML",
+  "Tools & Platforms",
+  "Concepts & Areas",
+  "Other"
+];
+
+---
+
+<section id="skills" class="py-20 md:py-28 border-t border-slate-200 dark:border-slate-700/80">
+  <div class="container mx-auto px-6">
+    <h2 class="text-4xl md:text-5xl font-bold text-center text-lm-text-main dark:text-dm-text-main mb-16 md:mb-20 skills-title">
+      My Technical Toolkit
+    </h2>
+
+    {categoryOrder.map(categoryName => {
+      const skillsInCategory = groupedSkills[categoryName];
+      if (!skillsInCategory || skillsInCategory.length === 0) return null;
+      return (
+        <div class="mb-12 skills-category">
+          <h3 class="text-2xl md:text-3xl font-semibold text-lm-text-main dark:text-dm-text-main mb-8 text-center md:text-left skills-category-title">
+            {categoryName}
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
+            {skillsInCategory.map(skill => (
+              <div class="skill-item-wrapper bg-lm-background-light dark:bg-dm-background-light p-3 shadow-lg dark:shadow-dm-card hover:shadow-card-hover dark:hover:shadow-dm-card-hover rounded-lg flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out border border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary transform hover:-translate-y-1 aspect-square">
+                <div class="w-24 h-24 mb-2 flex items-center justify-center text-primary">
+                  {skill.iconComponent && typeof skill.iconComponent !== 'string' ? (
+                    <skill.iconComponent className="w-full h-full object-contain" />
+                  ) : (
+                    <div class="w-24 h-24 bg-primary/10 dark:bg-primary/20 text-primary rounded-full flex items-center justify-center text-5xl font-bold">
+                      {skill.iconComponent || skill.name.substring(0, 1)}
+                    </div>
+                  )}
+                </div>
+                <span class="text-xl font-medium text-lm-text-muted dark:text-dm-text-muted">{skill.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    })}
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const skillsSection = document.querySelector('#skills');
+    if (!skillsSection) return;
+
+    gsap.from(skillsSection.querySelector('.skills-title'), {
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: skillsSection.querySelector('.skills-title'),
+        start: 'top 90%',
+        toggleActions: 'play none none none',
+      }
+    });
+
+    
+    const categories = skillsSection.querySelectorAll('.skills-category');
+    categories.forEach((category, index) => {
+      const categoryTitle = category.querySelector('.skills-category-title');
+      const skillItems = category.querySelectorAll('.skill-item-wrapper');
+
+      if (categoryTitle) {
+        gsap.from(categoryTitle, {
+          opacity: 0,
+          x: -50,
+          duration: 0.7,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: categoryTitle,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+          },
+          delay: index * 0.1 
+        });
+      }
+
+      if (skillItems.length > 0) {
+        gsap.fromTo(skillItems,
+          { 
+            opacity: 0,
+            y: 30,
+            scale: 0.9,
+          },
+          { 
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+            stagger: 0.08,
+            scrollTrigger: {
+              trigger: category, 
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+            delay: index * 0.1 + 0.2 
+          }
+        );
+      }
+    });
+  });
+</script> 
